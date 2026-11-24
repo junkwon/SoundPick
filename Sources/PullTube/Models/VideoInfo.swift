@@ -16,6 +16,13 @@ struct VideoInfo: Equatable {
     let artist: String?
     let album: String?
     let releaseYear: Int?
+    /// The site's categories ("Music", "Film & Animation", …). Empty when the
+    /// site gives none, or for a list-row stand-in.
+    let categories: [String]
+    /// False only when the site says what this is and it isn't music.
+    var mayBeMusic: Bool {
+        categories.isEmpty || categories.contains { $0.caseInsensitiveCompare("Music") == .orderedSame }
+    }
     /// Square album art, when the site provides it (YouTube Music tracks do),
     /// at 1200px where the image host allows resizing.
     let squareCover: URL?
@@ -41,6 +48,7 @@ struct VideoInfo: Equatable {
         artist = (json["artists"] as? [String])?.first ?? (json["artist"] as? String)
         album = json["album"] as? String
         releaseYear = (json["release_year"] as? NSNumber)?.intValue
+        categories = json["categories"] as? [String] ?? []
         squareCover = Self.squareCover(in: json["thumbnails"] as? [[String: Any]] ?? [])
         uploader = (json["uploader"] ?? json["channel"] ?? json["creator"]) as? String
         thumbnail = (json["thumbnail"] as? String).flatMap(URL.init(string:))

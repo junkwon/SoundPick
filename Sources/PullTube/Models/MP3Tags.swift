@@ -31,11 +31,25 @@ struct MP3Tags: Equatable {
         }
 
         let title = cleanTitle(info.title)
+        let channel = cleanChannel(info.uploader)
 
         // "Artist - Song"
         if let r = title.range(of: #"\s[-–—]\s"#, options: .regularExpression) {
-            tags.artist = String(title[..<r.lowerBound]).trimmingCharacters(in: .whitespaces)
-            tags.title = stripQuotes(String(title[r.upperBound...]))
+            let before = String(title[..<r.lowerBound]).trimmingCharacters(in: .whitespaces)
+            // A dash in the title of something that isn't music ("Big Buck
+            // Bunny 60fps 4K - Official Blender Foundation Short Film") is
+            // just punctuation, unless what comes before it is the channel.
+            if info.mayBeMusic || before.caseInsensitiveCompare(channel) == .orderedSame {
+                tags.artist = before
+                tags.title = stripQuotes(String(title[r.upperBound...]))
+                return tags
+            }
+        }
+
+        // Not music: the whole title is the title, the channel made it.
+        if !info.mayBeMusic {
+            tags.title = title
+            tags.artist = channel
             return tags
         }
 
