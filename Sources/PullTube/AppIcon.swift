@@ -1,6 +1,6 @@
 import AppKit
 
-/// Shows the bare folder as the app's icon.
+/// Shows the app's own artwork as its icon, without macOS re-framing it.
 ///
 /// Recent macOS versions shrink any icon that doesn't fill the rounded-square
 /// shape and put it on a grey plate. A custom file icon (the kind Finder's

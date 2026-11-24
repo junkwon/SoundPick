@@ -80,7 +80,7 @@ Sources/PullTube/
   Resources/            icons, Vendored (bundled tools, not in git)
 scripts/
   download-deps.sh      fetch the bundled tools
-  make-icon.sh          build the app icon from Design/icon-source.png
+  make-icon.sh          draw the app icon (make-icon.swift draws it in code)
 project.yml             XcodeGen settings
 ```
 

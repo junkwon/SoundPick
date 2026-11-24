@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-# Regenerates the app icon from Design/icon-source.png: make-icon.swift
-# enlarges the note by 50% and writes the 1024px master, which is then
-# resized into every slot of AppIcon.appiconset.
+# Regenerates the app icon: make-icon.swift draws the 1024px master from
+# scratch, which is then resized into every slot of AppIcon.appiconset.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SET="$ROOT/Sources/PullTube/Resources/Assets.xcassets/AppIcon.appiconset"
 mkdir -p "$SET"
-swift "$ROOT/scripts/make-icon.swift" "$ROOT/Design/icon-source.png" "$SET/icon_1024.png" 1.5
+swift "$ROOT/scripts/make-icon.swift" "$SET/icon_1024.png"
 for px in 16 32 64 128 256 512; do
   sips -s format png -z $px $px "$SET/icon_1024.png" --out "$SET/icon_$px.png" >/dev/null
 done
@@ -30,7 +29,7 @@ JSON
 printf '{\n  "info" : { "author" : "xcode", "version" : 1 }\n}\n' > "$SET/../Contents.json"
 
 # The same artwork as a plain image, which the app applies to itself at launch
-# as a custom file icon (see AppIcon.swift) so macOS shows the bare folder.
+# as a custom file icon (see AppIcon.swift).
 FOLDER="$SET/../FolderIcon.imageset"
 mkdir -p "$FOLDER"
 cp "$SET/icon_1024.png" "$FOLDER/folder_1024.png"

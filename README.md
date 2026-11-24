@@ -80,7 +80,7 @@ Sources/PullTube/
   Resources/            아이콘, Vendored(번들 도구, git 제외)
 scripts/
   download-deps.sh      번들 도구 받기
-  make-icon.sh          Design/icon-source.png로 앱 아이콘 만들기
+  make-icon.sh          앱 아이콘 그리기 (make-icon.swift가 코드로 그림)
 project.yml             XcodeGen 설정
 ```
 
