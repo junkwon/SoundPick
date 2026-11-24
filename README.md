@@ -4,6 +4,13 @@ macOS용 미디어 다운로더입니다. 노래를 검색하거나 링크를 �
 
 > 받을 권리가 있는 콘텐츠에만 사용하세요. 각 사이트의 이용 약관과 저작권법을 지킬 책임은 사용자에게 있습니다.
 
+<p>
+  <img src="docs/main-light.png" width="49%" alt="밝은 화면의 SoundPick: 왼쪽에 검색 결과, 오른쪽에 커버와 형식·태그 설정">
+  <img src="docs/main-dark.png" width="49%" alt="어두운 화면의 SoundPick">
+</p>
+
+화면 속 영상은 Blender Foundation의 공개 단편 *Big Buck Bunny*입니다.
+
 ## 기능
 
 - **검색과 링크**: 제목으로 YouTube를 검색하거나, 링크를 붙여 넣거나(⌘V), 창에 끌어다 놓습니다. 검색은 YouTube만 지원하고, 링크는 yt-dlp가 지원하는 다른 사이트(Vimeo, TikTok 등)도 넣을 수 있지만 YouTube 외에는 충분히 시험하지 않았습니다.
@@ -51,6 +58,8 @@ xcodebuild -scheme PullTube -configuration Debug build
 4. **Download**를 누릅니다. 앨범에서는 체크한 곡을 모두 받습니다.
 
 저장 위치, 가수별 폴더, HEVC 재인코딩, 브라우저 쿠키 사용은 설정(⌘,)에서 바꿉니다. 기본 저장 위치는 다운로드 폴더입니다.
+
+<img src="docs/settings.png" width="380" alt="설정 창: 저장 위치, QuickTime 호환, 로그인, 번들 도구">
 
 ## 동작에 대해
 

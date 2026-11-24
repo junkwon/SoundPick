@@ -171,6 +171,14 @@ enum DebugSnapshot {
                 DispatchQueue.main.asyncAfter(deadline: .now() + at + 1) { click() }
             }
         }
+        // `-snapshotActivate YES` brings the app to the front first, so the
+        // picture shows an active window (for README screenshots).
+        if defaults.bool(forKey: "snapshotActivate") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + max(delay - 1.5, 0.5)) {
+                NSApp.activate(ignoringOtherApps: true)
+                if !defaults.bool(forKey: "openSettings") { window.makeKeyAndOrderFront(nil) }
+            }
+        }
         func save(_ win: NSWindow, _ suffix: String) {
             guard let v = win.contentView?.superview ?? win.contentView else { return }
             v.layoutSubtreeIfNeeded()
