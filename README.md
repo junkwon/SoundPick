@@ -91,3 +91,9 @@ project.yml             XcodeGen 설정
 ## 배포
 
 서명과 공증을 하지 않은 개인용 빌드입니다(ad-hoc 서명). 다른 Mac으로 옮기면 Gatekeeper가 실행을 막습니다.
+
+## 라이선스
+
+이 저장소의 소스 코드는 [MIT 라이선스](LICENSE)로 공개합니다.
+
+앱에 넣어 쓰는 도구는 각자의 라이선스를 따르며 이 저장소에는 들어 있지 않습니다: [yt-dlp](https://github.com/yt-dlp/yt-dlp)(Unlicense), [FFmpeg](https://ffmpeg.org)(LGPL/GPL, 빌드에 따라 다름), [Deno](https://deno.com)(MIT). 빌드한 앱을 다른 사람에게 배포한다면 이 도구들의 조건도 함께 지켜야 합니다.

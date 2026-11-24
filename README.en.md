@@ -91,3 +91,9 @@ The app is called SoundPick, but the target, scheme, source folder and bundle id
 ## Distribution
 
 This is a personal build that is neither signed with a developer certificate nor notarized (ad-hoc signing). On another Mac, Gatekeeper will block it.
+
+## License
+
+The source code in this repository is released under the [MIT License](LICENSE).
+
+The tools the app bundles follow their own licenses and are not part of this repository: [yt-dlp](https://github.com/yt-dlp/yt-dlp) (Unlicense), [FFmpeg](https://ffmpeg.org) (LGPL/GPL, depending on the build), [Deno](https://deno.com) (MIT). If you distribute a built app to others, their terms apply as well.
