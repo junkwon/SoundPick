@@ -1,0 +1,19 @@
+# Bundled tools (yt-dlp, ffmpeg, deno: about 330 MB). Recreate them with
+# scripts/download-deps.sh instead of storing them in git.
+Sources/PullTube/Resources/Vendored/
+
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Scratch output left in the project folder
+/err.txt
+/info.json
+
+# Local Claude Code settings
+.claude/settings.local.json

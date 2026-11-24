@@ -1,0 +1,67 @@
+name: PullTube
+
+options:
+  bundleIdPrefix: com.pulltube
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+
+targets:
+  PullTube:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/PullTube
+        excludes:
+          - "Resources/Vendored"
+          - "Resources/Vendored/**"
+    info:
+      path: Sources/PullTube/Info.plist
+      properties:
+        CFBundleName: SoundPick
+        CFBundleDisplayName: SoundPick
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        LSMinimumSystemVersion: "13.0"
+        LSApplicationCategoryType: public.app-category.utilities
+    settings:
+      base:
+        # The app is called SoundPick. The target, scheme, source folder and
+        # bundle identifier keep the original "PullTube" name so saved
+        # settings (download folder, cookies, …) carry over.
+        PRODUCT_BUNDLE_IDENTIFIER: com.pulltube.PullTube
+        PRODUCT_NAME: SoundPick
+        # Ad-hoc signing: no Apple Developer account needed.
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: ""
+        ENABLE_HARDENED_RUNTIME: NO
+        # The post-build script reads from SRCROOT, so it can't run sandboxed.
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        GENERATE_INFOPLIST_FILE: NO
+        # Icon lives in Resources/Assets.xcassets; regenerate with scripts/make-icon.sh.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    postBuildScripts:
+      - name: Embed vendored yt-dlp + ffmpeg
+        basedOnDependencyAnalysis: false
+        script: |
+          set -euo pipefail
+          SRC="${SRCROOT}/Sources/PullTube/Resources/Vendored"
+          DST="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Vendored"
+          if [ ! -x "$SRC/yt-dlp-dist/yt-dlp_macos" ] || [ ! -x "$SRC/ffmpeg" ] || [ ! -x "$SRC/deno" ]; then
+            echo "error: Vendored binaries missing. Run ./scripts/download-deps.sh first."
+            exit 1
+          fi
+          # The app gives itself a custom file icon at launch (AppIcon.swift),
+          # which adds an "Icon\r" file to the bundle root. Code signing
+          # rejects unsealed files there, so clear it before each build.
+          rm -f "${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Icon"$'\r'
+          rm -rf "$DST"
+          mkdir -p "$(dirname "$DST")"
+          # ditto, not rsync: rsync gets SIGKILLed on iCloud Drive paths inside Xcode's sandbox.
+          ditto "$SRC" "$DST"
