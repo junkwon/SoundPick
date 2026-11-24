@@ -94,6 +94,77 @@ project.yml             XcodeGen 설정
 
 서명과 공증을 하지 않은 개인용 빌드입니다(ad-hoc 서명). 다른 Mac으로 옮기면 Gatekeeper가 실행을 막습니다.
 
+## 개발용 실행 옵션
+
+디버그 빌드에는 화면을 누르지 않고도 특정 상태를 만들어 확인할 수 있는 실행 옵션이 들어 있습니다. 릴리스 빌드에는 포함되지 않습니다. 실행 파일에 인자로 붙입니다.
+
+```bash
+APP=$(ls -d ~/Library/Developer/Xcode/DerivedData/PullTube-*/Build/Products/Debug/SoundPick.app | head -1)
+"$APP/Contents/MacOS/SoundPick" -openLink "https://www.youtube.com/watch?v=aqz-KE-bpKQ" -openFormat 1080 -snapshotTo /tmp/shot.png -snapshotDelay 10
+```
+
+<details>
+<summary>옵션 전체 목록</summary>
+
+**화면 불러오기와 조작**
+
+| 옵션 | 하는 일 |
+|---|---|
+| `-openLink <주소 또는 검색어>` | 실행하자마자 링크를 열거나 검색합니다. 이 옵션을 쓰면 형식 선택이 저장되지 않습니다. |
+| `-openFormat mp3\|m4a\|<높이>` | 형식을 고릅니다. 숫자는 영상 높이입니다(`360`, `1080`, `2160`). |
+| `-uncheck "2,4"` | 앨범·재생목록에서 해당 번호 곡의 체크를 풉니다. |
+| `-checkOnly "1,3"` | 해당 번호 곡만 체크합니다. |
+| `-debugEdit YES` | 3번 곡의 제목과 커버를 바꿔 "수정됨" 표시를 만듭니다. |
+| `-artQuery <검색어>` | 앨범 아트를 그 검색어로 찾습니다. |
+| `-openArtViewer YES` | 고른 앨범 아트를 크게 보는 창을 엽니다. |
+| `-autoPreview YES` | 불러온 지 4초 뒤 미리듣기를 소리 없이 재생합니다. |
+| `-clickSearch <초>` | 그 시간 뒤 검색창을 한 번 클릭합니다. |
+| `-clickSearchTwice YES` | 1초 뒤 한 번 더 클릭합니다. |
+
+**다운로드**
+
+| 옵션 | 하는 일 |
+|---|---|
+| `-autoDownload YES` | 보이는 곡 하나를 바로 받습니다. |
+| `-autoDownloadAll YES` | 체크된 곡을 모두 받습니다. |
+| `-autoCancelInDownloading YES` | 받는 도중(30% 이후) 취소를 누릅니다. |
+| `-autoCancelInProcessing YES` | 변환·태그 쓰기 단계에 들어가면 취소를 누릅니다. |
+| `-autoCancelDelayMs <밀리초>` | 취소를 누르기 전 기다리는 시간(기본 300). |
+
+**설정 창과 정리 시트**
+
+| 옵션 | 하는 일 |
+|---|---|
+| `-openSettings YES` | 설정 창을 엽니다. |
+| `-openOrganizer YES` | 설정 창에서 정리 시트를 엽니다. |
+| `-organizeFolder <경로>` | 정리 시트가 저장 폴더 대신 이 폴더를 봅니다. |
+| `-organizerAutoMove YES` | 선택된 파일을 바로 옮깁니다. `-organizeFolder`와 함께일 때만 동작합니다. |
+
+**yt-dlp 업데이트**
+
+| 옵션 | 하는 일 |
+|---|---|
+| `-ytdlpCheckNow YES` | 하루가 지나지 않았어도 지금 확인합니다. |
+| `-ytdlpPretendVersion <버전>` | 앱 안의 yt-dlp를 그 버전인 것처럼 취급합니다(예: `2020.01.01`). |
+| `-ytdlpUpdateFolder <경로>` | 업데이트를 Application Support 대신 이 폴더에 설치합니다. |
+
+**화면 캡처**
+
+| 옵션 | 하는 일 |
+|---|---|
+| `-snapshotTo <파일.png>` | 창을 그림으로 저장하고 앱을 끝냅니다. 설정 창은 `…-settings.png`, 시트는 `…-sheet.png`로 저장됩니다. |
+| `-snapshotDelay <초>` | 저장하기 전 기다리는 시간(최소 1). |
+| `-snapshotAppearance light\|dark` | 밝은 화면 또는 어두운 화면으로 찍습니다. |
+| `-snapshotActivate YES` | 찍기 전에 앱을 앞으로 가져옵니다. |
+
+**함께 쓰면 좋은 것**
+
+- 저장된 설정도 같은 방식으로 한 번만 덮어쓸 수 있습니다. 예: `-downloadFolder /tmp/test`, `-reencodeToHEVC YES`. 저장된 값은 바뀌지 않습니다.
+- `-ApplePersistenceIgnoreState YES`는 macOS가 기억한 창 상태를 무시합니다. 앱을 강제 종료한 뒤 메인 창이 안 뜰 때 필요합니다.
+- 창이 활성 상태로 찍히게 하려면 실행 파일을 직접 실행하지 말고 `open -W -n SoundPick.app --args …`로 실행합니다.
+
+</details>
+
 ## 라이선스
 
 이 저장소의 소스 코드는 [MIT 라이선스](LICENSE)로 공개합니다.

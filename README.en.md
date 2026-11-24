@@ -94,6 +94,77 @@ The app is called SoundPick, but the target, scheme, source folder and bundle id
 
 This is a personal build that is neither signed with a developer certificate nor notarized (ad-hoc signing). On another Mac, Gatekeeper will block it.
 
+## Launch options for development
+
+Debug builds include launch options that set up a particular state without clicking through the interface. They are not part of release builds. Pass them as arguments to the executable.
+
+```bash
+APP=$(ls -d ~/Library/Developer/Xcode/DerivedData/PullTube-*/Build/Products/Debug/SoundPick.app | head -1)
+"$APP/Contents/MacOS/SoundPick" -openLink "https://www.youtube.com/watch?v=aqz-KE-bpKQ" -openFormat 1080 -snapshotTo /tmp/shot.png -snapshotDelay 10
+```
+
+<details>
+<summary>All options</summary>
+
+**Loading and driving the interface**
+
+| Option | What it does |
+|---|---|
+| `-openLink <link or search text>` | Opens a link or runs a search at launch. With this option the format choice is not saved. |
+| `-openFormat mp3\|m4a\|<height>` | Chooses the format. A number is a video height (`360`, `1080`, `2160`). |
+| `-uncheck "2,4"` | Unticks those track numbers in an album or playlist. |
+| `-checkOnly "1,3"` | Ticks only those track numbers. |
+| `-debugEdit YES` | Changes track 3's title and cover, to show the "edited" mark. |
+| `-artQuery <text>` | Searches for album art with that text. |
+| `-openArtViewer YES` | Opens the large view of the chosen album art. |
+| `-autoPreview YES` | Starts a muted preview 4 seconds after loading. |
+| `-clickSearch <seconds>` | Clicks the search field once after that long. |
+| `-clickSearchTwice YES` | Clicks it again a second later. |
+
+**Downloads**
+
+| Option | What it does |
+|---|---|
+| `-autoDownload YES` | Downloads the track shown. |
+| `-autoDownloadAll YES` | Downloads every ticked track. |
+| `-autoCancelInDownloading YES` | Presses Cancel part-way through the download (after 30%). |
+| `-autoCancelInProcessing YES` | Presses Cancel once the conversion or tag-writing step starts. |
+| `-autoCancelDelayMs <milliseconds>` | Pause before pressing Cancel (default 300). |
+
+**Settings window and Organize sheet**
+
+| Option | What it does |
+|---|---|
+| `-openSettings YES` | Opens the Settings window. |
+| `-openOrganizer YES` | Opens the Organize sheet from Settings. |
+| `-organizeFolder <path>` | Points the Organize sheet at this folder instead of the download folder. |
+| `-organizerAutoMove YES` | Moves the selected files at once. Works only together with `-organizeFolder`. |
+
+**yt-dlp updates**
+
+| Option | What it does |
+|---|---|
+| `-ytdlpCheckNow YES` | Checks now, even if a day has not passed. |
+| `-ytdlpPretendVersion <version>` | Treats the yt-dlp inside the app as that version (for example `2020.01.01`). |
+| `-ytdlpUpdateFolder <path>` | Installs updates in this folder instead of Application Support. |
+
+**Screenshots**
+
+| Option | What it does |
+|---|---|
+| `-snapshotTo <file.png>` | Saves a picture of the window and quits. The Settings window is saved as `…-settings.png` and a sheet as `…-sheet.png`. |
+| `-snapshotDelay <seconds>` | How long to wait before saving (at least 1). |
+| `-snapshotAppearance light\|dark` | Takes the picture in light or dark mode. |
+| `-snapshotActivate YES` | Brings the app to the front first. |
+
+**Useful alongside**
+
+- Saved settings can be overridden for one run the same way, for example `-downloadFolder /tmp/test` or `-reencodeToHEVC YES`. The saved values are not changed.
+- `-ApplePersistenceIgnoreState YES` ignores the window state macOS remembered. It is needed when the main window does not appear after the app was force-quit.
+- For a picture of an active window, launch with `open -W -n SoundPick.app --args …` instead of running the executable directly.
+
+</details>
+
 ## License
 
 The source code in this repository is released under the [MIT License](LICENSE).
