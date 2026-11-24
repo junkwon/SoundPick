@@ -1,3 +1,5 @@
+<img src="docs/icon.png" width="96" alt="SoundPick app icon: a white guitar pick holding music notes on red">
+
 # SoundPick
 
 [한국어](README.md) | English

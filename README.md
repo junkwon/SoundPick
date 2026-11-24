@@ -1,3 +1,5 @@
+<img src="docs/icon.png" width="96" alt="SoundPick 앱 아이콘: 빨간 바탕의 흰 기타 피크 안에 음표">
+
 # SoundPick
 
 한국어 | [English](README.en.md)
